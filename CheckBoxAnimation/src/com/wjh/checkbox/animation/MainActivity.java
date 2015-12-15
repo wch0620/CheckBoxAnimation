@@ -104,7 +104,7 @@ public class MainActivity extends Activity {
 			mTopBarBuilder.setOnBatchCallBack(mBatchCallBack);
 		} else {
 			mTopBarBuilder.setTopBarStyle(TopBarStyle.TOP_BAR_NOTMAL_STYLE);
-			mTopBarBuilder.setTopBarTtitle("正常模式");
+			mTopBarBuilder.setTopBarTtitle("普通模式");
 		}
 	}
 	

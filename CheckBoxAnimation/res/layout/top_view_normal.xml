@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:padding="12dp"
-        android:src="@drawable/smsmms_topbar_chat_up" />
+        android:src="@drawable/icon_back" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="正常模式"
+            android:text="普通模式"
             android:textColor="#1a1a1a"
             android:textSize="16dp" />
 

@@ -29,15 +29,14 @@ public final class R {
         public static final int check_box_bg=0x7f020000;
         public static final int checkbox_checked=0x7f020001;
         public static final int checkbox_normal=0x7f020002;
-        public static final int ic_back_normal=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int list_selector=0x7f020005;
-        public static final int personal_center_avatar_female1=0x7f020006;
-        public static final int personal_center_avatar_female2=0x7f020007;
-        public static final int personal_center_avatar_male1=0x7f020008;
-        public static final int personal_center_avatar_male2=0x7f020009;
-        public static final int smsmms_topbar_chat_up=0x7f02000a;
-        public static final int smsmms_topbar_msgchat_background=0x7f02000b;
+        public static final int ic_launcher=0x7f020003;
+        public static final int icon_back=0x7f020004;
+        public static final int icon_top_background=0x7f020005;
+        public static final int list_selector=0x7f020006;
+        public static final int personal_center_avatar_female1=0x7f020007;
+        public static final int personal_center_avatar_female2=0x7f020008;
+        public static final int personal_center_avatar_male1=0x7f020009;
+        public static final int personal_center_avatar_male2=0x7f02000a;
     }
     public static final class id {
         public static final int all=0x7f080009;
