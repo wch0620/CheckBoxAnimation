@@ -6,8 +6,8 @@
 
 ##效果图
 普通模式下：</br>
-![普通模式](https://github.com/wch0620/CheckBoxAnimation/screenshots/Screenshot_2015-12-16-00-24-09.png)
+![普通模式](https://raw.githubusercontent.com/wch0620/CheckBoxAnimation/master/screenshots/Screenshot_2015-12-16-00-24-09.png)
 </br>
 </br>
 批量模式下：</br>
-![批量模式](https://github.com/wch0620/CheckBoxAnimation/screenshots/Screenshot_2015-12-16-00-24-14.png)
+![批量模式](https://raw.githubusercontent.com/wch0620/CheckBoxAnimation/master/screenshots/Screenshot_2015-12-16-00-24-14.png)
