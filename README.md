@@ -6,8 +6,8 @@
 
 ##效果图
 普通模式下：</br>
-![普通模式](http://image.baidu.com/detail/newindex?col=&tag=&pn=1&pid=30238502140&aid=411160477&user_id=207151178&setid=-1&sort=0&newsPn=&star=&fr=&from=2)
+![普通模式](https://github.com/wch0620/CheckBoxAnimation/screenshots/Screenshot_2015-12-16-00-24-09.png)
 </br>
 </br>
 批量模式下：</br>
-![批量模式](http://image.baidu.com/detail/newindex?col=&tag=&pn=0&pid=30238528327&aid=411160477&user_id=207151178&setid=-1&sort=0&newsPn=&star=&fr=&from=2)
+![批量模式](https://github.com/wch0620/CheckBoxAnimation/screenshots/Screenshot_2015-12-16-00-24-14.png)
