@@ -27,11 +27,15 @@
     }
 ```
 </br>
-|  常量      |    说明 | 
-| -------- | --------| 
-| TOP_BAR_NOTMAL_STYLE      |   普通模式    | 
-| TOP_BAR_BATCH_EDIT_STYLE  |   批量模式    |
-| TOP_BAR_CUSTOM_STYLE      |   自定义模式  |
+
+
+| 常量             | 说明                           |
+| -------------- | ---------------------------- |
+| TOP_BAR_NOTMAL_STYLE | 普通模式         |
+| TOP_BAR_BATCH_EDIT_STYLE  | 批量模式 |
+| TOP_BAR_CUSTOM_STYLE  | 自定义模式              |
+
+
 </br>
 TopBar的回调接口
 ```
@@ -59,13 +63,6 @@ TopBar的回调接口
 ```
 通过设置SetTopBarStyle的时候切换TopBar。
 ```
-public void setTopBarStyle(TopBarStyle style) {
-    	if (style == mTopBarStyle) {
-			return;
-		}
-        mTopBarStyle = style;
-        mContentContainer.removeAllViews();
-        
         switch (style) {
 		case TOP_BAR_NOTMAL_STYLE:
 			View normalView = mLayoutInflater.inflate(R.layout.top_view_normal, mContentContainer);
@@ -91,161 +88,49 @@ public void setTopBarStyle(TopBarStyle style) {
 					}
 				}
 			});
-			
-			mChooseView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					if (mBatchCallBack != null) {
-						int checkedCount = mBatchCallBack.getCheckedItemCount();
-						int totalCount = mBatchCallBack.getTotalItemCount();
-						if (checkedCount != totalCount) {
-							mBatchCallBack.onSelectAllItems();
-						} else {
-							mBatchCallBack.onClearAllItems();
-						}
-					}
-				}
-			});
-			break;
-		default:
-			break;
-		}
-        
-	}
+
 ```
 
 TopBar动画：
 
 ```
-mAnimationHide = new AlphaAnimation(1.0f, 0.0f);
-mAnimationHide.setInterpolator(new DecelerateInterpolator());
-mAnimationHide.setDuration(200);
-mAnimationShow = new AlphaAnimation(0.0f, 1.0f);
-mAnimationShow.setInterpolator(new AccelerateInterpolator());
-mAnimationShow.setDuration(600);
+	mAnimationHide = new AlphaAnimation(1.0f, 0.0f);
+	mAnimationHide.setInterpolator(new DecelerateInterpolator());
+	mAnimationHide.setDuration(200);
+	mAnimationShow = new AlphaAnimation(0.0f, 1.0f);
+	mAnimationShow.setInterpolator(new AccelerateInterpolator());
+	mAnimationShow.setDuration(600);
 ```
 
 BottomBar动画：
 
 ```
-	public void show(boolean animation) {
-        
-        if (mMenu.getMenuSize() <= 0) {
-            return;
-        }
-        
-        // 强制结束隐藏动画，不然两个动画会引起混乱
-        if (mHideAnimatorSet != null && mHideAnimatorSet.isRunning()) {
-            mHideAnimatorSet.end();
-        } 
-        
-        if (animation) {
-            if(mShowAnimatorSet == null){
-                mShowAnimatorSet = new AnimatorSet();
-                float distance = mBottomBarHeight / 0.618f;
-                long duration = 450L;
-                ObjectAnimator translateAnimator = ObjectAnimator.ofFloat(mBottomBarLayout, "translationY", distance, 0.0f);
-                translateAnimator.setDuration(duration);
-                ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mContentContainer, "alpha", 0.0f, 1.0f);
-                alphaAnimator.setDuration(duration);
-                mShowAnimatorSet.play(translateAnimator).with(alphaAnimator);
-                mShowAnimatorSet.addListener(new Animator.AnimatorListener() {                  
-                    @Override
-                    public void onAnimationStart(Animator animator) {
-                    	mContentContainer.setVisibility(View.VISIBLE);
-                    }
-                    
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
-                        
-                    }
-                    
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                    	mContentContainer.setVisibility(View.VISIBLE);                     
-                    }
-                    
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
-                        
-                    }
-                });
-            }            
-            if (mShowAnimatorSet.isRunning()) {
-                return;
-            }
-            mShowAnimatorSet.start();
-        } else {
-        	mContentContainer.setVisibility(View.VISIBLE);
-        }
-    
-	}
+        mShowAnimatorSet = new AnimatorSet();
+        float distance = mBottomBarHeight / 0.618f;
+        long duration = 450L;
+        ObjectAnimator translateAnimator = ObjectAnimator.ofFloat(mBottomBarLayout, "translationY", distance, 0.0f);
+        translateAnimator.setDuration(duration);
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mContentContainer, "alpha", 0.0f, 1.0f);
+        alphaAnimator.setDuration(duration);
+        mShowAnimatorSet.play(translateAnimator).with(alphaAnimator);	
 ```
 
 CheckBox动画：
 ```
-public static void animateShowing(final ViewHolder holder,
-				final ListAdapter adapter, boolean isAnimate) {
-			final CheckBox checkBox = holder.checkBox;
-			if (checkBox.getVisibility() == View.VISIBLE) {
-				return;
-			}
-			checkBox.setVisibility(View.VISIBLE);
-			checkBox.setAlpha(0.0f);
-			final int widthSpec = View.MeasureSpec.makeMeasureSpec(0,
-					View.MeasureSpec.UNSPECIFIED);
-			final int heightSpec = View.MeasureSpec.makeMeasureSpec(0,
-					View.MeasureSpec.UNSPECIFIED);
-			checkBox.measure(widthSpec, heightSpec);
-			ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) checkBox
-					.getLayoutParams();
-			final long transValue = checkBox.getMeasuredWidth() + lp.leftMargin
-					+ lp.rightMargin;
+	final ObjectAnimator transBodyAnimator = new ObjectAnimator();
+	final PropertyValuesHolder trans = PropertyValuesHolder.ofFloat("TranslationX", 0.0f, transValue);
+	transBodyAnimator.setTarget(holder.contentLayout);
+	transBodyAnimator.setValues(trans);
+	transBodyAnimator.setDuration(DURATION);
 
-			if (!isAnimate) {
-				checkBox.setAlpha(1.0f);
-				holder.contentLayout.setTranslationX(transValue);
-				return;
-			}
-
-			final ObjectAnimator transBodyAnimator = new ObjectAnimator();
-			final PropertyValuesHolder trans = PropertyValuesHolder.ofFloat(
-					"TranslationX", 0.0f, transValue);
-			transBodyAnimator.setTarget(holder.contentLayout);
-			transBodyAnimator.setValues(trans);
-			transBodyAnimator.setDuration(DURATION);
-
-			ObjectAnimator checkBoxAnim = new ObjectAnimator();
-			final PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat(
-					"ScaleX", 0.0f, 1.0f);
-			final PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat(
-					"ScaleY", 0.0f, 1.0f);
-			final PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat(
-					"Alpha", 0.0f, 1.0f);
-			checkBoxAnim.setValues(scaleX, scaleY, alpha);
-			checkBoxAnim.setTarget(holder.checkBox);
-			checkBoxAnim.setDuration(DURATION);
-			checkBoxAnim.setInterpolator(new DecelerateInterpolator());
-			checkBoxAnim.addListener(new AnimatorListenerAdapter() {
-				@Override
-				public void onAnimationStart(Animator animation) {
-					checkBox.setTag("animating");
-				}
-
-				@Override
-				public void onAnimationEnd(Animator animation) {
-					// adapter.setCheckBoxAnimator(false);
-					checkBox.setTag("animated");
-				}
-			});
-			if (!(checkBox.getTag() != null && "animating".equals(checkBox
-					.getTag()))) {
-				// 若正在播放动画，则不继续播放动画
-				transBodyAnimator.start();
-				checkBoxAnim.start();
-			}
-		}
+	ObjectAnimator checkBoxAnim = new ObjectAnimator();
+	final PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("ScaleX", 0.0f, 1.0f);
+	final PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("ScaleY", 0.0f, 1.0f);
+	final PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("Alpha", 0.0f, 1.0f);
+	checkBoxAnim.setValues(scaleX, scaleY, alpha);
+	checkBoxAnim.setTarget(holder.checkBox);
+	checkBoxAnim.setDuration(DURATION);
+	checkBoxAnim.setInterpolator(new DecelerateInterpolator());
 ```
 
 批量模式下，用来记录当前选中状态
