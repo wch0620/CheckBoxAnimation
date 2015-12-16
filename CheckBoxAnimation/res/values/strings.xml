@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">CheckBoxAnimation</string>
+    <string name="app_name">CardsGame</string>
+    <string name="menu_batch">批量操作</string>
+    <string name="menu_add">添加</string>
+    <string name="menu_delete">删除</string>
 </resources>

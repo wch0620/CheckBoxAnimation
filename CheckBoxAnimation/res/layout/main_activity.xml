@@ -8,7 +8,16 @@
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/icon_top_background"
+        android:background="@drawable/topbar_background"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
         android:orientation="vertical" >
     </LinearLayout>
 
@@ -16,6 +25,7 @@
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_bar"
         android:layout_marginTop="48dp"
         android:divider="@null" />
 

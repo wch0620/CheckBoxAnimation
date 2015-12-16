@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.wjh.checkbox.animation.widget.BottomBar;
+import com.wjh.checkbox.animation.widget.BottomBarBuilder;
+import com.wjh.checkbox.animation.widget.Menu;
+import com.wjh.checkbox.animation.widget.MenuItem;
+import com.wjh.checkbox.animation.widget.OnMenuItemClickListener;
 import com.wjh.checkbox.animation.widget.TopBar.BatchCallBack;
 import com.wjh.checkbox.animation.widget.TopBarBuilder;
 import com.wjh.checkbox.animation.widget.TopBar.TopBarStyle;
@@ -37,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 2015-12-15 13:52:22
@@ -46,6 +52,10 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 	
 	private static final String TAG = "wujiaohai";
+	
+	private static final int INITIALIZE = 0;
+	
+	private static final int ADD = 1;
 	
 	private LinearLayout mTopLayout;//顶部布局
 	
@@ -62,6 +72,12 @@ public class MainActivity extends Activity {
     private Animation mAnimationShow;//顶部栏显示动画
     
 	private Animation mAnimationHide;//顶部栏隐藏动画
+	
+	private LinearLayout mBottomLayout;//底部菜单布局
+	
+	private BottomBarBuilder mBottomBarBuilder;
+	
+	private MenuItemClickListener mMenuItemClickListener;
 
     /** 批量模式下，用来记录当前选中状态 */
     private SparseArray<Boolean> mSelectState = new SparseArray<Boolean>();
@@ -80,6 +96,7 @@ public class MainActivity extends Activity {
 		initAnimation();
 		initView();
 		initTopBar();
+		initBottomBar();
 		loadData();
 	}
 	
@@ -113,7 +130,6 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			rmTopBarView();
 			cancelBatchModel();
 		}
 		
@@ -165,14 +181,106 @@ public class MainActivity extends Activity {
 		
 	};
 	
+	private void initBottomBar() {
+		if(mBottomBarBuilder == null) {
+			mBottomBarBuilder = new BottomBarBuilder(this, mBottomLayout);
+		}
+		onPrepareBottomBar(mBottomBarBuilder);
+		if(mMenuItemClickListener == null) {
+			mMenuItemClickListener = new MenuItemClickListener();
+		}
+		mBottomBarBuilder.setOnMenuItemClickListener(mMenuItemClickListener);
+		mBottomBarBuilder.updateView();
+	}
+	
+	private void onPrepareBottomBar(BottomBar bottomBar) {
+	    if (bottomBar == null) {
+	    	Log.w("wujiaohai", "the bottombar is null in onPrepareBottomBar");
+	        return;
+	    }
+	    Menu menu = bottomBar.getMenu();
+	    if (menu != null) {
+	        menu.clear();
+	        onPrepareBottomMenu(menu);
+	        int menuItemSize = menu.getMenuSize();
+	        Log.d("wujiaohai", "the menuItemSize is " + menuItemSize + " after call onPrepareMenu");
+	    } else {
+	    	Log.w("wujiaohai", "the menu is null in onPrepareBottomBar");
+	    }
+	}
+	
+	private class MenuItemClickListener implements OnMenuItemClickListener {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			int itemId = item.getId();
+			switch (itemId) {
+			case R.string.menu_delete:
+				List<Integer> ids = getSelectedIds();
+				doDelete(ids);
+				break;
+			case R.string.menu_add:
+				new LoadDataTask().execute(new Params(ADD));
+				break;
+			case R.string.menu_batch:
+				isBatchModel = true;
+	            rmTopBarView();
+	            initBottomBar();
+				refreshListView();
+				break;
+			}
+			return true;
+		}
+		
+	}
+	
+	private void doDelete(List<Integer> ids) {
+		for (int i = 0; i < mListData.size(); i++) {
+			long dataId = mListData.get(i).getId();
+			for (int j = 0; j < ids.size(); j++) {
+				int deleteId = ids.get(j);
+				if(dataId == deleteId) {
+					mListData.remove(i);
+					i--;
+					ids.remove(j);
+					j--;
+				}
+			}
+		}
+        cancelBatchModel();
+	}
+	
+    private final List<Integer> getSelectedIds() {
+        ArrayList<Integer> selectedIds = new ArrayList<Integer>();
+        for (int index = 0; index < mSelectState.size(); index++) {
+            if (mSelectState.valueAt(index)) {
+                selectedIds.add(mSelectState.keyAt(index));
+            }
+        }
+        return selectedIds;
+    }
+	
+	private void onPrepareBottomMenu(Menu menu) {
+		if(isBatchModel) {
+			menu.add(0, R.string.menu_delete, R.string.menu_delete,
+					R.drawable.bottombar_icon_delete);
+		} else {
+			menu.add(0, R.string.menu_batch, R.string.menu_batch,
+					R.drawable.bottombar_icon_copy_number);
+			menu.add(0, R.string.menu_add, R.string.menu_add,
+					R.drawable.bottombar_icon_add_contact);
+		}
+	}
+	
 	private void initView() {
 		mTopLayout = (LinearLayout) findViewById(R.id.top_bar);
+		mBottomLayout = (LinearLayout) findViewById(R.id.bottom_bar);
 		mListView = (ListView) findViewById(R.id.listview);
 		mListView.setSelector(R.drawable.list_selector);
 	}
 	
 	private void loadData() {
-		new LoadDataTask().execute();
+		new LoadDataTask().execute(new Params(INITIALIZE));
 	}
 	
 	private void refreshListView() {
@@ -187,12 +295,15 @@ public class MainActivity extends Activity {
 	}
 	
 	private List<DataBean> getData() {
+		int maxId = 0;
+		if(mListData != null && mListData.size() > 0)
+			maxId = mListData.get(mListData.size() - 1).getId();
 		List<DataBean> result = new ArrayList<DataBean>();
 		DataBean data = null;
 		for (int i = 0; i < 20; i++) {
 			data = new DataBean();
-			data.setId(i);
-			data.setTitle("Data-" + i);
+			data.setId(maxId + i + 1);//从最大Id的下一个开始
+			data.setTitle("Data-" + (maxId + i + 1));
 			data.setContent("创建时间 " + getTime());
 			data.setHeadId(getHeadId());
 			result.add(data);
@@ -211,21 +322,45 @@ public class MainActivity extends Activity {
 		return headIds[headId];
 	}
 	
-	private class LoadDataTask extends AsyncTask<Void, Void, List<DataBean>> {
+	class Params {
+		int op;
+
+		public Params(int op) {
+			this.op = op;
+		}
+		
+	}
+	
+	class Result {
+		int op;
+		List<DataBean> list;
+	}
+	
+	private class LoadDataTask extends AsyncTask<Params, Void, Result> {
 		@Override
-		protected List<DataBean> doInBackground(Void... params) {
+		protected Result doInBackground(Params... params) {
+			Params p = params[0];
+			Result result = new Result();
+			result.op = p.op;
 			try {//模拟耗时
 				Thread.sleep(500L);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			return getData();
+			result.list = getData();
+			return result;
 		}
 
 		@Override
-		protected void onPostExecute(List<DataBean> result) {
+		protected void onPostExecute(Result result) {
 			super.onPostExecute(result);
-			mListData = result;
+			if(result.op == INITIALIZE) {
+				mListData = result.list;
+			} else {
+				mListData.addAll(result.list);
+				Toast.makeText(getApplicationContext(), "添加成功！", Toast.LENGTH_SHORT).show();
+			}
+			
 			refreshListView();
 		}
 		
@@ -293,6 +428,7 @@ public class MainActivity extends Activity {
 			int _id = (int) mListData.get(position).getId();
             mSelectState.put(_id, true);
             rmTopBarView();
+            initBottomBar();
 			refreshListView();
 			return true;
 		}
@@ -367,6 +503,8 @@ public class MainActivity extends Activity {
         isBatchModel = false;
         mSelectState.clear();
         refreshListView();
+        initBottomBar();
+        rmTopBarView();
     }
 	
     @Override
@@ -374,7 +512,6 @@ public class MainActivity extends Activity {
         if(KeyEvent.KEYCODE_BACK == keyCode) {
             if(isBatchModel) {
                 cancelBatchModel();
-                rmTopBarView();
                 return true;
             }
         }
