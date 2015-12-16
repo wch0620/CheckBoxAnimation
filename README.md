@@ -138,8 +138,7 @@ CheckBox动画：
 private SparseArray<Boolean> mSelectState = new SparseArray<Boolean>();
 ```
 ##四、效果图：
-![普通模式](https://github.com/wch0620/CheckBoxAnimation/raw/master/screenshots/Screenshot_normal.png)
-![批量模式](https://github.com/wch0620/CheckBoxAnimation/raw/master/screenshots/Screenshot_batch.png)
+![Gif](https://github.com/wch0620/CheckBoxAnimation/raw/master/gif/screen.gif)
 
 
 
