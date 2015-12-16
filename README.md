@@ -1,4 +1,4 @@
-# 欢迎使用Markdown编辑器写博客
+# Android中ListView切换批量模式动画效果
 
 ##一、背景
 很多时候，对于ListView需要切换批量操作模式，通常进入批量模式的方式有：长按列表和菜单方式。于是封装了一个ListView的批量操作的Demo。
@@ -28,7 +28,7 @@
 ```
 </br>
 |  常量      |    说明 | 
-| :-------- | --------:| 
+| -------- | --------| 
 | TOP_BAR_NOTMAL_STYLE      |   普通模式    | 
 | TOP_BAR_BATCH_EDIT_STYLE  |   批量模式    |
 | TOP_BAR_CUSTOM_STYLE      |   自定义模式  |
@@ -253,8 +253,8 @@ public static void animateShowing(final ViewHolder holder,
 private SparseArray<Boolean> mSelectState = new SparseArray<Boolean>();
 ```
 ##四、效果图：
-![普通模式](http://xiangce.baidu.com/picture/detail/c6d0419927f2bf78492cef68db1dca4037e1b72a?from=dialog)
-![批量模式i](http://xiangce.baidu.com/picture/detail/208482f2c6212ac7b31d34d4e0d3b3126a192029?from=dialog)
+![普通模式](https://github.com/wch0620/CheckBoxAnimation/raw/master/screenshots/Screenshot_normal.png)
+![批量模式](https://github.com/wch0620/CheckBoxAnimation/raw/master/screenshots/Screenshot_batch.png)
 
 
 
