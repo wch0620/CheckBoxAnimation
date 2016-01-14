@@ -1,4 +1,4 @@
-# Android中ListView切换批量模式动画效果
+# UI_第一弹：Android中ListView切换批量模式动画效果
 
 ##一、背景
 很多时候，对于ListView需要切换批量操作模式，通常进入批量模式的方式有：长按列表和菜单方式。于是封装了一个ListView的批量操作的Demo。
