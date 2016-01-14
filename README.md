@@ -3,12 +3,22 @@
 ##一、背景
 很多时候，对于ListView需要切换批量操作模式，通常进入批量模式的方式有：长按列表和菜单方式。于是封装了一个ListView的批量操作的Demo。
 
-##二、效果
+##二、效果图：
+![Gif](https://github.com/wch0620/CheckBoxAnimation/raw/master/gif/screen.gif)
+
+##三、微信公众号：
+**关注微信公众号，获取密码，了解更多。**
+
+**微信公众号：jike_android**
+
+![公众号](https://github.com/wch0620/StatusBar/raw/master/WeiXin/qrcode.jpg)
+
+##四、功能
  1. CheckBox显示和隐藏动画
  2. 封装一个顶部栏TopBar，并且实现批量操作的切换动画
  3. 封装一个底部菜单，实现显示和隐藏动画。
 
-##三、实现
+##五、实现
 
 定义接口TopBar与BottomBar。
 定义TopBar的类型：
@@ -137,17 +147,9 @@ CheckBox动画：
 ```
 private SparseArray<Boolean> mSelectState = new SparseArray<Boolean>();
 ```
-##四、效果图：
-![Gif](https://github.com/wch0620/CheckBoxAnimation/raw/master/gif/screen.gif)
 
 
 
----------
 
-[1]: http://math.stackexchange.com/
-[2]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"
-[3]: http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference
-[4]: http://bramp.github.io/js-sequence-diagrams/
-[5]: http://adrai.github.io/flowchart.js/
-[6]: https://github.com/benweet/stackedit
+
 
